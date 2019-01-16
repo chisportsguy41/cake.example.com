@@ -19,6 +19,7 @@ class PostsController extends AppController
             'index',
             'view'
         ]);
+        $this->loadModel('Comments');
     }
     /**
      * Index method
@@ -47,8 +48,9 @@ class PostsController extends AppController
         $post = $this->Posts->get($id, [
             'contain' => ['Users']
         ]);
-
+        $comments = $this->Comments->find()->where(['post_id'=>$id])->order('created DESC');
         $this->set('post', $post);
+        $this->set('comments', $comments);
     }
 
     /**

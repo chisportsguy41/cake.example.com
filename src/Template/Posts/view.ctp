@@ -16,43 +16,19 @@
     </ul>
 </nav>
 <div class="posts view large-9 medium-8 columns content">
-    <h3><?= h($post->title) ?></h3>
-    <table class="vertical-table">
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= h($post->id) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Title') ?></th>
-            <td><?= h($post->title) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Slug') ?></th>
-            <td><?= h($post->slug) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Meta Keywords') ?></th>
-            <td><?= h($post->meta_keywords) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Meta Description') ?></th>
-            <td><?= h($post->meta_description) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('User') ?></th>
-            <td><?= $post->has('user') ? $this->Html->link($post->user->id, ['controller' => 'Users', 'action' => 'view', $post->user->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Created') ?></th>
-            <td><?= h($post->created) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Modified') ?></th>
-            <td><?= h($post->modified) ?></td>
-        </tr>
-    </table>
+    <h2><?= h($post->title) ?></h2>
+
     <div class="row">
-        <h4><?= __('Body') ?></h4>
         <?= $this->Text->autoParagraph(h($post->body)); ?>
+    </div>
+    <hr>
+    <div class="comments view large-9 medium-8 columns content">
+        <?php foreach($comments as $comment):?>
+            <h4><?=h($comment->title)?></h4>
+            <?= $this->Text->autoParagraph(h($comment->body));?>
+            <hr>
+        <?php endforeach;?>
+        <a href="/comments/add/<?=$post->id?>">Add a comment</a>
+        <br><br>
     </div>
 </div>

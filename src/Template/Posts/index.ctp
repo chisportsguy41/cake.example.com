@@ -15,28 +15,12 @@
 <div class="posts index large-9 medium-8 columns content">
     <h3><?= __('Posts') ?></h3>
     <table cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('title') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('slug') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('body') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('user_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
+
         <tbody>
             <?php foreach ($posts as $post): ?>
             <tr>
-                <td><?= h($post->id) ?></td>
                 <td><?= h($post->title) ?></td>
-                <td><?= h($post->slug) ?></td>
-                <td><?= h($post->body) ?></td>
-                <td><?= $post->has('user') ? $this->Html->link($post->user->id, ['controller' => 'Users', 'action' => 'view', $post->user->id]) : '' ?></td>
-                <td><?= h($post->created) ?></td>
-                <td><?= h($post->modified) ?></td>
+                <td><?= $post->has('user') ? $this->Html->link(('By ' . $post->user->first_name . ' ' . $post->user->last_name), ['controller' => 'Users', 'action' => 'view', $post->user->id]) : '' ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $post->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $post->id]) ?>
