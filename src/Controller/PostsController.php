@@ -19,6 +19,7 @@ class PostsController extends AppController
             'index',
             'view'
         ]);
+        $this->loadModel('Users');
         $this->loadModel('Comments');
     }
     /**
@@ -45,12 +46,32 @@ class PostsController extends AppController
      */
     public function view($id = null)
     {
+        $com = $this->Comments->newEntity();
+        if ($this->request->is('post')) {
+            $com = $this->Comments->patchEntity($com, $this->request->getData());
+            if (empty($this->session->read('Auth.User.id'))) {
+                $this->Flash->error(__('Please log in before commenting'));
+                return $this->redirect('/login?redirect=/posts/view/' . $id);
+            } else {
+                $com->user_id = $this->session->read('Auth.User.id');
+                $com->post_id = $id;
+                if ($this->Comments->save($com)) {
+                    $this->Flash->success(__('The comment has been saved.'));
+                    return $this->redirect(['action'=>'view', $id]);
+                }else{
+                    $this->Flash->error(__('The post could not be saved. Please, try again.'));
+                }
+            }
+        }
         $post = $this->Posts->get($id, [
             'contain' => ['Users']
         ]);
+        $users = $this->Users->find()->where(['id'=>$post->user_id]);
         $comments = $this->Comments->find()->where(['post_id'=>$id])->order('created DESC');
         $this->set('post', $post);
+        $this->set('users', $users);
         $this->set('comments', $comments);
+        $this->set(compact('com'));
     }
 
     /**

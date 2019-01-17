@@ -17,7 +17,10 @@
 </nav>
 <div class="posts view large-9 medium-8 columns content">
     <h2><?= h($post->title) ?></h2>
-
+    <?php foreach($users as $user):?>
+        <a href="/users/<?=$user->id?>">By <?= h($user->first_name . ' ' . $user->last_name) ?></a>
+        <hr>
+    <?php endforeach;?>
     <div class="row">
         <?= $this->Text->autoParagraph(h($post->body)); ?>
     </div>
@@ -28,7 +31,19 @@
             <?= $this->Text->autoParagraph(h($comment->body));?>
             <hr>
         <?php endforeach;?>
-        <a href="/comments/add/<?=$post->id?>">Add a comment</a>
+
+        <?= $this->Form->create($com, ['novalidate'=>true]) ?>
+            <fieldset>
+                <legend><?= __('Add Comment') ?></legend>
+                <?php
+                    echo $this->Form->control('title');
+                    echo $this->Form->control('body');
+                    //echo $this->Form->control('user_id', ['options' => $users, 'empty' => true]);
+                    //echo $this->Form->control('post_id', ['options' => $posts, 'empty' => true]);
+                ?>
+            </fieldset>
+            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->end() ?>
         <br><br>
     </div>
 </div>
